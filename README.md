@@ -78,7 +78,11 @@ For repo root:
 
 ### DVB-T app
 
-The DVB-T app is based on a GRC flowgraph provided with BogdanDIA's `gr-dvbt` module (the exact file is `apps/dvbt_tx_demo.grc`). 
+The DVB-T app is based on a GRC flowgraph provided with BogdanDIA's `gr-dvbt` module (the exact file is `apps/dvbt_tx_demo.grc`). The simplified flowgraph (and the python script GRC converts it to) are included for reference at `grc/dvbt_app*`. `examples/c++/dvbt_app*.cc` is the C++ implementation based off the python script, it can be used as a test harness for fuzzing. 
+
+Note: for the `rational_resampler_xxx_0` block, the `taps` argument is left as `None` in the python script, indicating automatic filter taps should be used. In the C++ implementation this is not possible, so I assiged it some fairly arbitary taps.
+
+![alt text](pics/dvbt_app_flowgraph.png "GRC flowgraph for DVB-T application")
 
 ```
 /path/to/afl-fuzz -m 1000 -t 1000+ -i test_cases/dvbt_app1/ -o findings_dir/ -- build/examples/dvbt_app1 @@ /dev/null

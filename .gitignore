@@ -1,5 +1,5 @@
-apps/
 build/
 docs/
-grc/
 MANIFEST.md
+input
+output
