@@ -61,6 +61,8 @@ sudo make install # to install the tester blocks
 
 # Fuzzing
 
+### Tester blocks
+
 This module contains two blocks, both implemented in C++, that can be used to test that fuzzing is working. `first_block` copies it's input to it's output, whereas `second_block` does the same but SEGFAULTS if the input contains a `\0` byte. 
 
 There is both a python script and C++ program that make use of each of the tester blocks, as well as `.grc` flowgraph file. However only the C++ programs (`examples/c++`) can be used as fuzz test harnesses.
@@ -74,7 +76,17 @@ For repo root:
 /path/to/afl-fuzz -m 100 -i test_cases/demo_blocks/ -o results/fuzz-test2 -- build/examples/c++/second_block_demo @@ /dev/null
 ```
 
+### DVB-T app
+
+The DVB-T app is based on a GRC flowgraph provided with BogdanDIA's `gr-dvbt` module (the exact file is `apps/dvbt_tx_demo.grc`). 
+
+```
+/path/to/afl-fuzz -m 1000 -t 1000+ -i test_cases/dvbt_app1/ -o findings_dir/ -- build/examples/dvbt_app1 @@ /dev/null
+```
+
 # Results
+
+See `results/` directory...
 
 `fuzz-test1`: 
 - test harness: `first_block_demo`
