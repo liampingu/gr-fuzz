@@ -4,60 +4,11 @@ I'm attempting to do a bit of fuzz testing of GNURadio with afl.
 
 Since GNURadio is more of a platform for building SDR applications I've focused on a particular setup: a SDR system that sends / receives DVB-T (digital video broadcast - terrestrial) using a USRP device. Hence some fuzz testing harnesses require installing `UHD` by EttusResearch and `gr-dvbt` by BogdanDIA. 
 
-GNURadio is written in C++ and Python. In general, module functionality is written in C++ and compiled to shared libraries. GNURadio applications are written in Python and link to the libraries via a SWIG interface. Unfortunately, afl can't be used to instrument Python scripts, so this repo contains a few simple GNURadio applications written in C++ that *can* be instrumented.
+GNURadio modules are written in C++, whereas GNURadio applications that pull functionality from these modules into a flowgraph are written in Python and interact with the module libraries via a SWIG interface. Unfortunately, afl can't be used to instrument Python scripts, so this repo contains a few simple GNURadio applications written in C++ that **can** be instrumented.
 
 # Setup
 
-### Build afl-fuzz
-
-```
-git clone https://github.com/mirrorer/afl
-cd afl
-make
-```
-
-### Install GNURadio
-
-GNURadio needs to be compiled with afl `instrumentation`, and so must be built from source:
-
-```
-git clone https://github.com/gnuradio/gnuradio.git
-cd gnuradio
-mkdir build
-cd build
-CC=/path/to/afl-gcc CXX=/path/to/afl-g++ cmake -DENABLE_DOXYGEN=OFF -DCMAKE_BUILD_TYPE=Debug ../
-make && make test
-sudo make install
-```
-
-See `https://wiki.gnuradio.org/index.php/BuildGuide` for more detailed instructions.
-
-### Install gr-dvbt
-
-Optional, but some fuzz test harness are testing 
-
-```
-git clone https://github.com/BogdanDIA/gr-dvbt.git
-cd gr-dvbt
-mkdir build
-cd build
-CC=/path/to/afl-gcc CXX=/path/to/afl-g++ cmake -DCMAKE_BUILD_TYPE=Debug ../
-make
-sudo make install
-sudo ldconfig
-```
-
-### Install this module
-
-```
-git clone https://github.com/liampingu/gr-fuzzing
-cd gr-fuzzing
-mkdir build
-cd build
-CC=/path/to/afl-gcc CXX=/path/to/afl-g++ cmake -DCMAKE_BUILD_TYPE=Debug ../
-make
-sudo make install # to install the tester blocks
-```
+See `SETUP.md`
 
 # Fuzzing
 
@@ -85,7 +36,7 @@ Note: for the `rational_resampler_xxx_0` block, the `taps` argument is left as `
 ![alt text](pics/dvbt_app_flowgraph.png "GRC flowgraph for DVB-T application")
 
 ```
-/path/to/afl-fuzz -m 100 -i test_cases/dvbt_app/ -o results/fuzz-test3 -- build/examples/c++/dvbt_app1 @@ /dev/null
+/path/to/afl-fuzz -m 500 -t 1000+ -i test_cases/dvbt_app/ -o results/fuzz-test4 -- build/examples/c++/dvbt_app1 @@ /dev/null
 ```
 
 # Results
@@ -109,3 +60,6 @@ See `results/` directory...
 - 8.8M execs
 - 2700 paths found
 - no crashes, 3 unique hangs
+
+`fuzz-test4`:
+- test harness: `dvbt_app1`
