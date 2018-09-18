@@ -1,3 +1,5 @@
+#include <iostream>
+
 // Include header files for each block used in flowgraph
 #include <gnuradio/top_block.h>
 #include <gnuradio/blocks/file_source.h>
@@ -9,6 +11,11 @@ using namespace gr;
 
 int main(int argc, char **argv)
 {
+   if(argc != 3) {
+      std::cout << "Usage: " << argv[0] << " <input file> <output file>\n";
+      return -1;
+   }
+   
   // top block
   top_block_sptr tb = make_top_block("first_block_demo");
   
