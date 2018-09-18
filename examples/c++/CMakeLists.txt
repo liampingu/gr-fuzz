@@ -25,3 +25,11 @@ target_link_libraries(dvbt_app1
     gnuradio-pmt
     gnuradio-filter
     boost_system)
+    
+add_executable(uhd_app1 uhd_app1.cc)
+target_link_libraries(uhd_app1 
+    gnuradio-runtime 
+    gnuradio-blocks 
+    gnuradio-pmt
+    gnuradio-uhd
+    boost_system)
