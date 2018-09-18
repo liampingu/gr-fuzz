@@ -13,3 +13,15 @@ target_link_libraries(second_block_demo
     gnuradio-pmt
     gnuradio-fuzzing
     boost_system)
+    
+add_executable(dvbt_app1 dvbt_app1.cc)
+target_link_libraries(dvbt_app1 
+    gnuradio-runtime 
+    gnuradio-filter 
+    gnuradio-fft 
+    gnuradio-dvbt 
+    gnuradio-digital
+    gnuradio-blocks 
+    gnuradio-pmt
+    gnuradio-filter
+    boost_system)
