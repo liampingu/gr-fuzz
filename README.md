@@ -85,7 +85,7 @@ Note: for the `rational_resampler_xxx_0` block, the `taps` argument is left as `
 ![alt text](pics/dvbt_app_flowgraph.png "GRC flowgraph for DVB-T application")
 
 ```
-/path/to/afl-fuzz -m 1000 -t 1000+ -i test_cases/dvbt_app1/ -o findings_dir/ -- build/examples/dvbt_app1 @@ /dev/null
+/path/to/afl-fuzz -m 100 -i test_cases/dvbt_app/ -o results/fuzz-test3 -- build/examples/c++/dvbt_app1 @@ /dev/null
 ```
 
 # Results
